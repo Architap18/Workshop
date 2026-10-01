@@ -11,7 +11,20 @@ async function readProducts() {
         throw err;
     }
 }
+async function writeProducts(products) {
+    try {
+        await fs.writeFile(
+            pathToFile,
+            JSON.stringify(products, null, 2)
+        );
 
+        return products;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
 module.exports = {
-    readProducts
+    readProducts,
+    writeProducts
 };

@@ -24,8 +24,21 @@ async function one(req, res) {
         console.log(err);
     }
 }
+async function add(req, res) {
+    try {
+        const product = await service.add(req.body);
+
+        cache.clear();
+
+        res.status(201).json({ product });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+}
 
 module.exports = {
     all,
-    one
+    one,
+    add
 };
