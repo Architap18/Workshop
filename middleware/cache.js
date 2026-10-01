@@ -15,7 +15,14 @@ function save(key, data) {
     cache[key] = data;
 }
 
+function clear() {
+    for (const key in cache) {
+        delete cache[key];
+    }
+}
+
 module.exports = {
     cacheGet,
-    save
+    save,
+    clear
 };
