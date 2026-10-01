@@ -54,9 +54,30 @@ async function edit(id, data) {
 
     return products[index];
 }
+async function patch(id, data) {
+    const products = await readProducts();
+
+    const index = products.findIndex(
+        product => product.id === Number(id)
+    );
+
+    if (index === -1) {
+        return null;
+    }
+
+    products[index] = {
+        ...products[index],
+        ...data
+    };
+
+    await writeProducts(products);
+
+    return products[index];
+}
 module.exports = {
     getProducts,
     getProdById,
     add,
-    edit
+    edit,
+    patch
 };
