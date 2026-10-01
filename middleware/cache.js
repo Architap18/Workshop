@@ -2,17 +2,27 @@ const cache = {};
 
 function cacheGet(req, res, next) {
     let key = req.url;
-    let value=cache[key];
+    let value = cache[key];
+
     if (value) {
-        res.set('X-Cache', 'HIT');
-        return res.json(cache[key]);
+        const age = Date.now() - value.time;
+
+        if (age < 60000) {
+            res.set('X-Cache', 'HIT');
+            return res.json(value.data);
+        }
+
+        delete cache[key];
     }
+
     res.set('X-Cache', 'MISS');
-    res.cacheKey = key;
     next();
 }
 function save(key, data) {
-    cache[key] = data;
+    cache[key] = {
+    data: data,
+    time: Date.now()
+};;
 }
 
 function clear() {

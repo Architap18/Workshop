@@ -1,8 +1,9 @@
 const service = require('../services/productService');
-
+const cache = require('../middleware/cache');
 async function all(req, res) {
     try {
         const products = await service.getProducts();
+        cache.save(req.url, products);
         res.status(200).json(products);
     } catch (err) {
         console.log(err);
@@ -19,6 +20,7 @@ async function one(req, res) {
                 message: 'Product not found'
             });
         }
+        cache.save(req.url, { product });
         res.status(200).json({ product });
     } catch (err) {
         console.log(err);
