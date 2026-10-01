@@ -37,8 +37,33 @@ async function add(req, res) {
     }
 }
 
+async function edit(req, res) {
+    try {
+        const product = await service.edit(
+            req.params.id,
+            req.body
+        );
+
+        if (!product) {
+            return res.status(404).json({
+                message: 'Product not found'
+            });
+        }
+
+        cache.clear();
+
+        res.status(200).json({ product });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Server error'
+        });
+    }
+}
+
 module.exports = {
     all,
     one,
-    add
+    add,
+    edit
 };
